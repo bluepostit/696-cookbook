@@ -10,7 +10,7 @@ class Controller
     # get recipes from the cookbook (repository)
     # send to view to display to user
     recipes = @cookbook.all
-    @view.list(recipes)
+    @view.display(recipes)
   end
 
   def create
