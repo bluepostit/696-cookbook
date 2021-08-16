@@ -25,11 +25,13 @@ class Cookbook
   private
 
   def load_csv
-    CSV.foreach(@csv_file_path) do |row|
-      # grab info: name, description
-      name = row[0]
-      description = row[1]
-      recipe = Recipe.new(name, description)
+    csv_options = {
+      headers: :first_row,
+      header_converters: :symbol
+    }
+    CSV.foreach(@csv_file_path, csv_options) do |row|
+      row[:rating] = row[:rating].to_i
+      recipe = Recipe.new(row)
       # add to @recipes array
       @recipes << recipe
     end
@@ -42,8 +44,9 @@ class Cookbook
       force_quotes: true
     }
     CSV.open(@csv_file_path, 'wb', csv_options) do |csv|
+      csv << %w[name description rating]
       @recipes.each do |recipe|
-        csv << [recipe.name, recipe.description]
+        csv << [recipe.name, recipe.description, recipe.rating]
       end
     end
   end

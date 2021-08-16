@@ -21,7 +21,12 @@ class Controller
     # add it to the cookbook (repository)
     name = @view.ask_user_for('name')
     description = @view.ask_user_for('description')
-    recipe = Recipe.new(name, description)
+    rating = @view.ask_user_for_rating
+    recipe = Recipe.new(
+      name: name,
+      description: description,
+      rating: rating
+    )
     @cookbook.add_recipe(recipe)
   end
 

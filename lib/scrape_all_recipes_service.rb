@@ -21,7 +21,12 @@ class ScrapeAllRecipesService
       # build a Recipe object with this data and return it
       name = div.search('h3').text.strip
       description = div.search('.card__summary').text.strip
-      Recipe.new(name, description)
+      rating = div.search('.rating-star.active').count
+      Recipe.new(
+        name: name,
+        description: description,
+        rating: rating
+      )
     end
     results
   end
