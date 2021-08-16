@@ -22,10 +22,12 @@ class Controller
     name = @view.ask_user_for('name')
     description = @view.ask_user_for('description')
     rating = @view.ask_user_for_rating
+    prep_time = @view.ask_user_for('preparation time')
     recipe = Recipe.new(
       name: name,
       description: description,
-      rating: rating
+      rating: rating,
+      prep_time: prep_time
     )
     @cookbook.add_recipe(recipe)
   end
