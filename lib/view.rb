@@ -11,6 +11,6 @@ class View
   end
 
   def ask_user_for_index
-    ask_user_for('number').to_i - 1
+    ask_user_for('recipe number').to_i - 1
   end
 end
