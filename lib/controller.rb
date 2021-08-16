@@ -1,9 +1,5 @@
-require 'open-uri'
-require 'nokogiri'
-
 require_relative 'view'
-
-BASE_URL = 'https://www.allrecipes.com/search/results/?search='
+require_relative 'scrape_all_recipes_service'
 
 class Controller
   def initialize(cookbook)
@@ -46,19 +42,7 @@ class Controller
     # Ask the user which recipe they want to import (ask for an index)
     # Add it to the Cookbook
     keyword = @view.ask_user_for('keyword to search for')
-    url = "#{BASE_URL}#{keyword}"
-    html = URI.open(url).read
-    doc = Nokogiri::HTML(html, nil, 'utf-8')
-
-    # We want an array of Recipe objects! Super convenient to use
-    divs = doc.search('.card__detailsContainer') # => array of elements
-    results = divs.first(5).map do |div|
-      # get name & description
-      # build a Recipe object with this data and return it
-      name = div.search('h3').text.strip
-      description = div.search('.card__summary').text.strip
-      Recipe.new(name, description)
-    end
+    results = ScrapeAllRecipesService.new(keyword).call
 
     @view.display(results)
     index = @view.ask_user_for_index
